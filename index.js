@@ -1,15 +1,4 @@
-const { buildSchema } = require("graphql");
-const server = require("express-graphql");
 const CORS = require("micro-cors")();
+const server = require("./server");
 
-const schema = buildSchema(`
-    type Query {
-        hello: String
-    }
-`);
-
-const rootValue = {
-  hello: () => "Hello Earth"
-};
-
-module.exports = CORS(server({ schema, rootValue }));
+module.exports = CORS(server);
