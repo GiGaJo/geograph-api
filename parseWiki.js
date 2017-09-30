@@ -1,4 +1,5 @@
 const crawlWiki = require("./crawlWiki");
+const jsonFile = require("jsonfile");
 
 const parseLanguageString = (string = "") => {
   if (string === undefined) return [];
@@ -40,7 +41,6 @@ const prepareResponse = raw => {
     const translations = parseLanguageString(translationsString);
     byCountry[englishName] = translations;
     Object.keys(translations).forEach((language, i) => {
-      if (i === 0 && englishName[0] === "B") console.log(language);
       const old = byLanguage[language] || {};
       const newEntry = Object.assign({}, old);
       newEntry[englishName] = translations[language];

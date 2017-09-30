@@ -1,7 +1,8 @@
 {
   "name": "geograph-api",
   "scripts": {
-    "start": "micro index.js"
+    "start": "micro index.js",
+    "crawl": "node parseAndCache.js"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
