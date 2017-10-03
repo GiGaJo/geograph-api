@@ -19,6 +19,18 @@ const translationsByCountry = country => r => ({
     .filter(t => t.translation)
 });
 
+const translationsByLanguage = language => r => ({
+  translations: Object.keys(r.byCountry)
+    .map(country => {
+      return {
+        language: language,
+        translation: r.byCountry[country][language],
+        name: country
+      };
+    })
+    .filter(t => t.translation)
+});
+
 const TranslationListType = new GraphQLObjectType({
   name: "TranslationList",
   description: "List of translations for a given country",
@@ -51,7 +63,7 @@ const RootType = new GraphQLObjectType({
   description: "Get country names in different languages",
   fields: () => ({
     byCountry: {
-      name: "Translations for country",
+      name: "Translations for one country",
       description: "All translated names for given country (in English)",
       type: TranslationListType,
       args: {
@@ -59,6 +71,16 @@ const RootType = new GraphQLObjectType({
       },
       resolve: (root, { country }) =>
         loadData.then(translationsByCountry(country))
+    },
+    byLanguage: {
+      name: "All translated countries in one language",
+      description: "All countries in ",
+      type: TranslationListType,
+      args: {
+        language: { type: GraphQLString }
+      },
+      resolve: (root, { language }) =>
+        loadData.then(translationsByLanguage(language))
     }
   })
 });
