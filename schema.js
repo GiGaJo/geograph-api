@@ -31,6 +31,9 @@ const translationsByLanguage = language => r => ({
     .filter(t => t.translation)
 });
 
+const allLanguages = r => Object.keys(r.byLanguage);
+const allCountries = r => Object.keys(r.byCountry);
+
 const TranslationListType = new GraphQLObjectType({
   name: "TranslationList",
   description: "List of translations for a given country",
@@ -81,6 +84,19 @@ const RootType = new GraphQLObjectType({
       },
       resolve: (root, { language }) =>
         loadData.then(translationsByLanguage(language))
+    },
+    languages: {
+      name: "All languages",
+      description:
+        "List of all languages in which the countries are translated into",
+      type: new GraphQLList(GraphQLString),
+      resolve: () => loadData.then(allLanguages)
+    },
+    countries: {
+      name: "All countries",
+      description: "List of all countries that are translated in the dataset",
+      type: new GraphQLList(GraphQLString),
+      resolve: () => loadData.then(allCountries)
     }
   })
 });
